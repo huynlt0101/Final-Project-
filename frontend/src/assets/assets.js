@@ -15,7 +15,9 @@ import search_icon from './search_icon.png'
 import menu_icon from './menu_icon.png'
 import cross_icon from './cross_icon.png'
 import hero_img from './hero_img.png'
-
+import support_img from './support_img.png'
+import exchange_icon from './exchange_icon.png'
+import quality_icon from './quality_icon.png'
 
 export const assets = {
 
@@ -25,7 +27,10 @@ export const assets = {
     search_icon,
     menu_icon,
     cross_icon,
-    hero_img
+    hero_img,
+    support_img,
+    exchange_icon,
+    quality_icon
 }
 
 export const products = [
@@ -46,7 +51,7 @@ export const products = [
         name: "Men Stand Collar Zipper Jacket",
         description: "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
         price: 200,
-        image: [p_img2_1,p_img2_2,p_img2_3,p_img2_4],
+        image: [p_img2_1, p_img2_2, p_img2_3, p_img2_4],
         category: "Men",
         subCategory: "Topwear",
         sizes: ["M", "L", "XL"],
