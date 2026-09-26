@@ -18,6 +18,8 @@ import hero_img from './hero_img.png'
 import support_img from './support_img.png'
 import exchange_icon from './exchange_icon.png'
 import quality_icon from './quality_icon.png'
+import contact_img from './contact_img.png'
+import about_img from './about_img.png'
 
 export const assets = {
 
@@ -30,7 +32,9 @@ export const assets = {
     hero_img,
     support_img,
     exchange_icon,
-    quality_icon
+    quality_icon,
+    contact_img,
+    about_img
 }
 
 export const products = [
