@@ -8,7 +8,7 @@ import Contact from './pages/Contact'
 import Product from './pages/Product'
 import Cart from './pages/Cart'
 import Footer from './components/Footer'
-
+import Login from './pages/Login'
 
 const App = () => {
   return (
@@ -21,6 +21,7 @@ const App = () => {
         <Route path='/contact' element={<Contact />} />
         <Route path='/product/:productId' element={<Product />} />
         <Route path='/cart' element={<Cart />} />
+        <Route path='/login' element={<Login />} />
        </Routes>
       <Footer/>
     </div>
