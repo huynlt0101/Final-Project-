@@ -1,10 +1,14 @@
 import React from 'react'
 import { assets } from '../assets/assets'
 import { Link, NavLink } from 'react-router-dom'
+import { useContext } from 'react'
+import { ShopContext } from '../context/ShopContext'
 
 const Navbar = () => {
 
   const [visible, setVisible] = React.useState(false);
+
+  const {setShowSearch, getCartCount} = useContext(ShopContext);
 
   return (
     <div className='flex items-center justify-between py-5 font-medium'>
@@ -45,7 +49,7 @@ const Navbar = () => {
         </div>
         <Link to='/cart' className='relative inline-block'>
           <img src={assets.cart_icon} className='w-5 min-w-5' alt='' />
-          <p className='absolute -right-1 -bottom-1 w-4 h-4 text-center leading-4 bg-red-600 text-white aspect-square rounded-full text-[10px] flex items-center justify-center'>10</p>
+          <p className='absolute -right-1 -bottom-1 w-4 h-4 text-center leading-4 bg-red-600 text-white aspect-square rounded-full text-[10px] flex items-center justify-center'>{getCartCount()}</p>
         </Link>
         <img onClick={() => setVisible(true)} src={assets.menu_icon} className='w-5 cursor-pointer sm:hidden' alt='' />
       </div>
