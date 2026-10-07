@@ -1,6 +1,5 @@
-import React from 'react'
 import Navbar from './components/Navbar'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useLocation } from 'react-router-dom'
 import Home from './pages/Home'
 import Collection from './pages/Collection'
 import About from './pages/About'
@@ -11,6 +10,16 @@ import Footer from './components/Footer'
 import Login from './pages/Login'
 
 const App = () => {
+  const isLoginPage = useLocation().pathname === '/login'
+
+  if (isLoginPage) {
+    return (
+      <Routes>
+        <Route path='/login' element={<Login />} />
+      </Routes>
+    )
+  }
+
   return (
     <div className='px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]'>
       <Navbar />
