@@ -8,6 +8,7 @@ import Product from './pages/Product'
 import Cart from './pages/Cart'
 import Footer from './components/Footer'
 import Login from './pages/Login'
+import PlaceOrder from './pages/PlaceOrder'
 
 const App = () => {
   const isLoginPage = useLocation().pathname === '/login'
@@ -31,6 +32,7 @@ const App = () => {
         <Route path='/product/:productId' element={<Product />} />
         <Route path='/cart' element={<Cart />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/place-order' element={<PlaceOrder />} />
        </Routes>
       <Footer/>
     </div>

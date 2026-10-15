@@ -32,6 +32,7 @@ import exchange_icon from './exchange_icon.png'
 import quality_icon from './quality_icon.png'
 import contact_img from './contact_img.png'
 import about_img from './about_img.png'
+import paypal from './paypal.png'
 
 export const assets = {
 
@@ -46,7 +47,8 @@ export const assets = {
     exchange_icon,
     quality_icon,
     contact_img,
-    about_img
+    about_img,
+    paypal
 }
 
 export const products = [
