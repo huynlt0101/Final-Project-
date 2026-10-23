@@ -44,10 +44,7 @@ export default (sequelize) => {
         allowNull: false,
         defaultValue: true
       },
-      full_name: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
+   
       address: {
         type: DataTypes.STRING,
         allowNull: true

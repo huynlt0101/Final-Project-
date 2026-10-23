@@ -1,0 +1,31 @@
+$kind: http-request
+url: http://localhost:8080/api/auth/register
+method: POST
+body:
+  type: urlencoded
+  content:
+    - key: username
+      value: testuser02
+      disabled: false
+      description: ""
+    - key: email
+      value: testuser02@example.com
+      disabled: false
+      description: ""
+    - key: password
+      value: Test@123456
+      disabled: false
+      description: ""
+    - key: role_id
+      value: "2"
+      disabled: true
+      description: ""
+    - key: is_active
+      value: "true"
+      disabled: true
+      description: ""
+    - key: department_id
+      value: ""
+      disabled: true
+      description: ""
+order: 1000

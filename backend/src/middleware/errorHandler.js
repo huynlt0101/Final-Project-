@@ -1,5 +1,6 @@
-import { errorResponse } from '../utils/response.js';
-import config from '../config/index.js';
+
+import { errorResponse } from '../../src/utils/response.js';
+import config from '../../src/config/index.js';
 
 // Handles unknown API routes
 export const notFoundHandler = (req, res, next) => {
@@ -9,6 +10,7 @@ export const notFoundHandler = (req, res, next) => {
 // Centralized error handler
 export const errorHandler = (err, req, res, next) => {
   const statusCode = err.statusCode || 500;
+
   const message =
     statusCode === 500 && config.nodeEnv === 'production'
       ? 'Internal server error'

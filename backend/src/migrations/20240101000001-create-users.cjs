@@ -9,7 +9,7 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true
       },
-      full_name: {
+      username: {
         type: Sequelize.STRING,
         allowNull: false
       },
@@ -22,7 +22,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      role: {
+      role_id: {
         type: Sequelize.STRING,
         allowNull: false
       },

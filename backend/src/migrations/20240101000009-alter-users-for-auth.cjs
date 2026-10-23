@@ -5,7 +5,7 @@ module.exports = {
     const table = await queryInterface.describeTable('users');
 
     if (!table.username) {
-      await queryInterface.addColumn('users', 'username', {
+      await queryInterface.addColumn('users', 'username' , {
         type: Sequelize.STRING(50),
         allowNull: true,
         unique: true

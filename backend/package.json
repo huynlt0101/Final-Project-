@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "name": "backend",
   "version": "1.0.0",
   "description": "Basic Node.js Express REST API Backend",
@@ -17,9 +16,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "express-rate-limit": "^8.7.1",
+    "express-validator": "^7.3.2",
+    "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.3",
     "mysql2": "^3.24.4",
     "sequelize": "^6.37.8",
     "sequelize-cli": "^6.6.5",
@@ -28,33 +33,5 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.14"
-=======
-  "name": "final-project-backend",
-  "version": "1.0.0",
-  "type": "module",
-  "main": "src/server.js",
-  "scripts": {
-    "dev": "nodemon src/server.js",
-    "start": "node src/server.js",
-    "check": "node --input-type=module -e \"import './src/app.js'; console.log('App imports successfully');\""
-  },
-  "dependencies": {
-    "bcryptjs": "^3.0.0",
-    "cookie-parser": "^1.4.7",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
-    "express": "^5.0.0",
-    "express-rate-limit": "^7.1.5",
-    "express-validator": "^7.1.0",
-    "helmet": "^8.0.0",
-    "jsonwebtoken": "^9.0.2",
-    "mysql2": "^3.5.1",
-    "sequelize": "^6.5.1",
-    "swagger-jsdoc": "^6.0.0",
-    "swagger-ui-express": "^5.0.0"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.7"
->>>>>>> bd3599dde7d0584885f58772a0ba0cb9d3365412
   }
 }

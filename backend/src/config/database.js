@@ -1,11 +1,13 @@
 import 'dotenv/config';
 import { Sequelize } from 'sequelize';
 
-const dbName = process.env.DB_NAME || process.env.DATABASE || 'test';
-const dbUser = process.env.DB_USER || process.env.USERNAME || 'root';
-const dbPassword = process.env.DB_PASSWORD || process.env.PASSWORD || '';
-const dbHost = process.env.DB_HOST || process.env.HOST || 'localhost';
-const dbPort = Number(process.env.DB_PORT || process.env.PORT || 4000);
+const dbName = process.env.DB_NAME || 'test';
+const dbUser = process.env.DB_USER || 'root';
+const dbPassword = process.env.DB_PASSWORD || '';
+const dbHost = process.env.DB_HOST || 'localhost';
+const dbPort = Number(process.env.DB_PORT || 4000);
+
+const useSsl = dbHost.includes('tidbcloud') || process.env.DB_SSL === 'true';
 
 const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
   host: dbHost,
@@ -13,10 +15,8 @@ const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
   dialect: 'mysql',
   logging: false,
   dialectOptions: {
-    ssl: dbHost.includes('tidbcloud') || process.env.DB_SSL === 'true' ? {
-      require: true,
-      rejectUnauthorized: false
-    } : undefined
+    connectTimeout: 20000,
+    ...(useSsl ? { ssl: { rejectUnauthorized: false } } : {})
   },
   pool: {
     max: 10,

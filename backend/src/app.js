@@ -6,7 +6,7 @@ import rateLimit from 'express-rate-limit';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './config/swagger.js';
 import apiRoutes from './routes/index.js';
-import { notFoundHandler, errorHandler } from './middlewares/errorHandler.js';
+import { notFoundHandler, errorHandler } from './middleware/errorHandler.js';
 
 const app = express();
 
@@ -33,7 +33,20 @@ app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, {
+    explorer: true,
+    customSiteTitle: 'Backend API Docs',
+    swaggerOptions: {
+      persistAuthorization: true,
+      docExpansion: 'list',
+      filter: true,
+      displayRequestDuration: true
+    }
+  })
+);
 app.use('/api', apiRoutes);
 app.use(notFoundHandler);
 app.use(errorHandler);

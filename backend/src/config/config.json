@@ -1,9 +1,9 @@
 {
   "development": {
-  "username": "Rq3CdBvhxhNspPS.root",
-  "password": "MC6ZAOA8h0Z7cMjy",
+  "username": "B6WX6V1Jxd4rp9Q.root",
+  "password": "13bqSWGiEnKnSsNL",
   "database": "test",
-  "host": "gateway01.ap-southeast-1.prod.aws.tidbcloud.com",
+  "host": "gateway01.ap-northeast-1.prod.aws.tidbcloud.com",
   "port": 4000,
   "dialect": "mysql",
   "dialectOptions": {
@@ -15,9 +15,9 @@
   "logging": false
   },
   
-  "test": {
-  "username": "Rq3CdBvhxhNspPS.root",
-  "password": "MC6ZAOA8h0Z7cMjy",
+  "tests": {
+  "username": "B6WX6V1Jxd4rp9Q.root",
+  "password": "13bqSWGiEnKnSsNL",   
   "database": "test",
   "host": "gateway01.ap-southeast-1.prod.aws.tidbcloud.com",
   "port": 4000,
@@ -32,8 +32,8 @@
   },
   
   "production": {
-  "username": "Rq3CdBvhxhNspPS.root",
-  "password": "MC6ZAOA8h0Z7cMjy",
+  "username": "B6WX6V1Jxd4rp9Q.root",
+  "password": "13bqSWGiEnKnSsNL",
   "database": "test",
   "host": "gateway01.ap-southeast-1.prod.aws.tidbcloud.com",
   "port": 4000,
@@ -44,7 +44,7 @@
   "rejectUnauthorized": false
   }
   },
-  "logging": false
+  "logging": false  
   }
   }
   
