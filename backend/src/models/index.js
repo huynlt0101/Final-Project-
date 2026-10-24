@@ -1,3 +1,14 @@
+/**
+ * Sequelize models (single source of truth for associations).
+ *
+ * Tables: roles, users, refresh_tokens, categories, products,
+ *         orders, order_items, reviews, carts, cart_items
+ *
+ * Graph:
+ *   Role 1—* User 1—* Order *—1 OrderItem *—1 Product *—1 Category
+ *   User 1—1 Cart 1—* CartItem *—1 Product
+ *   User 1—* Review *—1 Product
+ */
 import sequelize from '../config/database.js';
 import UserModel from './User.js';
 import RoleModel from './Role.js';
@@ -7,6 +18,8 @@ import ProductModel from './Product.js';
 import OrderModel from './Order.js';
 import OrderItemModel from './OrderItem.js';
 import ReviewModel from './Review.js';
+import CartModel from './Cart.js';
+import CartItemModel from './CartItem.js';
 
 const User = UserModel(sequelize);
 const Role = RoleModel(sequelize);
@@ -16,6 +29,8 @@ const Product = ProductModel(sequelize);
 const Order = OrderModel(sequelize);
 const OrderItem = OrderItemModel(sequelize);
 const Review = ReviewModel(sequelize);
+const Cart = CartModel(sequelize);
+const CartItem = CartItemModel(sequelize);
 
 const models = {
   User,
@@ -25,7 +40,9 @@ const models = {
   Product,
   Order,
   OrderItem,
-  Review
+  Review,
+  Cart,
+  CartItem
 };
 
 Object.values(models).forEach((model) => {
@@ -43,7 +60,9 @@ export {
   Product,
   Order,
   OrderItem,
-  Review
+  Review,
+  Cart,
+  CartItem
 };
 
 export default {

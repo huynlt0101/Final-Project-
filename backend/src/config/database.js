@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import './loadEnv.js';
 import { Sequelize } from 'sequelize';
 
 const dbName = process.env.DB_NAME || 'test';

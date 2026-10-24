@@ -8,6 +8,8 @@ import categoryRoutes from './category.routes.js';
 import productRoutes from './product.routes.js';
 import orderRoutes from './order.routes.js';
 import reviewRoutes from './review.routes.js';
+import cartRoutes from './cart.routes.js';
+import cartItemRoutes from './cartItem.routes.js';
 import { authenticate } from '../middleware/auth.middleware.js';
 
 const router = Router();
@@ -43,6 +45,8 @@ router.use('/categories', categoryRoutes);
 router.use('/products', productRoutes);
 router.use('/orders', orderRoutes);
 router.use('/reviews', reviewRoutes);
+router.use('/cart', cartRoutes);
+router.use('/cart/items', authenticate, cartItemRoutes);
 
 /**
  * @swagger

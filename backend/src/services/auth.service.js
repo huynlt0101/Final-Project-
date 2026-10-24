@@ -82,6 +82,7 @@ const clearAuthCookies = (res) => {
   res.clearCookie('refreshToken', { path: '/' });
 };
 
+// Public register always creates a standard user (role "user"). Admin is created via db:seed:admin or POST /users by an admin.
 export const registerUser = async ({ username, email, password }) => {
   const safeUsername = normalizeUsername(username);
   const safeEmail = normalizeEmail(email);
@@ -143,6 +144,7 @@ export const registerUser = async ({ username, email, password }) => {
 
 export const loginUser = async ({ email, password }, res) => {
   const safeEmail = normalizeEmail(email);
+  const plainPassword = String(password ?? '').trim();
 
   if (!safeEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(safeEmail)) {
     throw new AppError(422, 'Invalid email format');
@@ -153,7 +155,7 @@ export const loginUser = async ({ email, password }, res) => {
     include: [{ association: 'role' }]
   });
 
-  if (!user || !(await bcrypt.compare(password || '', user.password))) {
+  if (!user || !(await bcrypt.compare(plainPassword, user.password))) {
     throw new AppError(401, 'Invalid credentials');
   }
 

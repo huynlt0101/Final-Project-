@@ -1,0 +1,5 @@
+$kind: http-request
+name: GET product by id (no body)
+url: http://localhost:8080/api/products/1
+method: GET
+order: 3100

@@ -13,7 +13,7 @@ const swaggerOptions = {
       title: 'Backend API',
       version: '1.0.0',
       description:
-        'Node.js Express REST API — Auth, Users, Profile, Categories, Products, Orders, Reviews.'
+        'Node.js Express REST API — Auth, Users, Profile, Categories, Products, Orders, Cart, Reviews.'
     },
     servers: [
       {
@@ -29,6 +29,8 @@ const swaggerOptions = {
       { name: 'Categories', description: 'Product categories' },
       { name: 'Products', description: 'Products catalog' },
       { name: 'Orders', description: 'Orders & payment status' },
+      { name: 'Cart', description: 'Shopping cart' },
+      { name: 'Cart Items', description: 'Lines in shopping cart' },
       { name: 'Reviews', description: 'Product reviews' },
       { name: 'Ideas', description: 'Ideas (placeholder)' },
       { name: 'Comments', description: 'Comments (placeholder)' },
@@ -180,6 +182,21 @@ const swaggerOptions = {
               type: 'string',
               enum: ['pending', 'paid', 'failed', 'refunded']
             }
+          }
+        },
+        CartItemInput: {
+          type: 'object',
+          required: ['product_id'],
+          properties: {
+            product_id: { type: 'integer', minimum: 1, example: 1 },
+            quantity: { type: 'integer', minimum: 1, example: 1 }
+          }
+        },
+        CartItemUpdate: {
+          type: 'object',
+          required: ['quantity'],
+          properties: {
+            quantity: { type: 'integer', minimum: 1, example: 2 }
           }
         },
         ReviewInput: {

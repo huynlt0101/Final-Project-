@@ -1,5 +1,5 @@
 // App configuration loaded from environment variables
-import 'dotenv/config';
+import './loadEnv.js';
 
 const config = {
   port: Number(process.env.PORT) || 8080,

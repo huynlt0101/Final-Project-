@@ -17,7 +17,12 @@ export const errorHandler = (err, req, res, next) => {
       : err.message || 'Internal server error';
 
   if (config.nodeEnv !== 'production') {
-    console.error(err);
+    const isExpectedClientError = err.statusCode && err.statusCode < 500;
+    if (isExpectedClientError) {
+      console.warn(`[${statusCode}] ${message}`);
+    } else {
+      console.error(err);
+    }
   }
 
   return errorResponse(res, message, statusCode);

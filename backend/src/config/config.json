@@ -1,12 +1,12 @@
 {
   "development": {
   "username": "B6WX6V1Jxd4rp9Q.root",
-  "password": "13bqSWGiEnKnSsNL",
+  "password": "W8UMBj8DqbJHnrzN",
   "database": "test",
   "host": "gateway01.ap-northeast-1.prod.aws.tidbcloud.com",
   "port": 4000,
   "dialect": "mysql",
-  "dialectOptions": {
+  "dialectOptions": { 
   "ssl": {
   "require": true,
   "rejectUnauthorized": false

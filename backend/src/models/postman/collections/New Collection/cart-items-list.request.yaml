@@ -1,0 +1,5 @@
+$kind: http-request
+name: GET cart items (no body)
+url: http://localhost:8080/api/cart/items
+method: GET
+order: 6100

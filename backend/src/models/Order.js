@@ -11,7 +11,11 @@ export default (sequelize) => {
       },
       user_id: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        references: {
+          model: 'users',
+          key: 'id'
+        }
       },
       order_date: {
         type: DataTypes.DATE,

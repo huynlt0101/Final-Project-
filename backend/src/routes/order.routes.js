@@ -94,7 +94,7 @@ router.post('/', createOrderValidation, validateRequest, createOrder);
 /**
  * @swagger
  * /orders/{id}/payment-status:
- *   patch:
+ *   put:
  *     tags: [Orders]
  *     summary: Update order payment status
  *     security:
@@ -117,6 +117,6 @@ router.post('/', createOrderValidation, validateRequest, createOrder);
  *       400:
  *         description: Validation error
  */
-router.patch('/:id/payment-status', paymentStatusValidation, validateRequest, updateOrderPaymentStatus);
+router.put('/:id/payment-status', paymentStatusValidation, validateRequest, updateOrderPaymentStatus);
 
 export default router;

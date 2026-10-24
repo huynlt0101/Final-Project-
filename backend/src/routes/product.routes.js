@@ -10,6 +10,8 @@ import {
 import { authenticate } from '../middleware/auth.middleware.js';
 import { authorize } from '../middleware/role.middleware.js';
 import { validateRequest } from '../middleware/validation.middleware.js';
+import { readOnlyGet, requireHttpMethod } from '../middleware/http.middleware.js';
+import { blockProductCreateOnGet } from '../middleware/product.middleware.js';
 
 const router = Router();
 
@@ -43,7 +45,7 @@ const productUpdateValidation = [
  *       200:
  *         description: Products list
  */
-router.get('/', getProducts);
+router.get('/', requireHttpMethod('GET'), readOnlyGet, blockProductCreateOnGet, getProducts);
 
 /**
  * @swagger
@@ -63,7 +65,7 @@ router.get('/', getProducts);
  *       404:
  *         description: Product not found
  */
-router.get('/:id', getProductById);
+router.get('/:id', requireHttpMethod('GET'), readOnlyGet, getProductById);
 
 /**
  * @swagger
@@ -87,7 +89,15 @@ router.get('/:id', getProductById);
  *       403:
  *         description: Admin only
  */
-router.post('/', authenticate, authorize('admin'), productValidation, validateRequest, createProduct);
+router.post(
+  '/',
+  requireHttpMethod('POST'),
+  authenticate,
+  authorize('admin'),
+  productValidation,
+  validateRequest,
+  createProduct
+);
 
 /**
  * @swagger
@@ -115,7 +125,15 @@ router.post('/', authenticate, authorize('admin'), productValidation, validateRe
  *       404:
  *         description: Product not found
  */
-router.put('/:id', authenticate, authorize('admin'), productUpdateValidation, validateRequest, updateProduct);
+router.put(
+  '/:id',
+  requireHttpMethod('PUT'),
+  authenticate,
+  authorize('admin'),
+  productUpdateValidation,
+  validateRequest,
+  updateProduct
+);
 
 /**
  * @swagger
@@ -137,6 +155,12 @@ router.put('/:id', authenticate, authorize('admin'), productUpdateValidation, va
  *       404:
  *         description: Product not found
  */
-router.delete('/:id', authenticate, authorize('admin'), deleteProduct);
+router.delete(
+  '/:id',
+  requireHttpMethod('DELETE'),
+  authenticate,
+  authorize('admin'),
+  deleteProduct
+);
 
 export default router;

@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import './loadEnv.js';
 
 export const authConfig = {
   jwt: {

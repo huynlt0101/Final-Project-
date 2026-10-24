@@ -26,13 +26,21 @@ const registerValidation = [
     .withMessage('Username must be between 3 and 30 characters')
     .matches(/^[a-zA-Z0-9_-]+$/)
     .withMessage('Username contains invalid characters'),
-  body('email').isEmail().withMessage('Please provide a valid email address'),
+  body('email')
+    .trim()
+    .normalizeEmail()
+    .isEmail()
+    .withMessage('Please provide a valid email address'),
   strongPassword
 ];
 
 const loginValidation = [
-  body('email').isEmail().withMessage('Please provide a valid email address'),
-  body('password').notEmpty().withMessage('Password is required')
+  body('email')
+    .trim()
+    .normalizeEmail()
+    .isEmail()
+    .withMessage('Please provide a valid email address'),
+  body('password').trim().notEmpty().withMessage('Password is required')
 ];
 
 const forgotPasswordValidation = [

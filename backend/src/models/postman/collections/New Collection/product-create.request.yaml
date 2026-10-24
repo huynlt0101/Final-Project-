@@ -1,0 +1,16 @@
+$kind: http-request
+name: POST create product (admin only)
+url: http://localhost:8080/api/products
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "category_id": 1,
+      "name": "Laptop Dell Inspiron 15",
+      "description": "Laptop van phong",
+      "price": 1599.99,
+      "stock_quantity": 20,
+      "image_url": "https://example.com/laptop.jpg"
+    }
+order: 3200

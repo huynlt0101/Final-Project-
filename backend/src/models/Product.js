@@ -11,7 +11,11 @@ export default (sequelize) => {
       },
       category_id: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        references: {
+          model: 'categories',
+          key: 'id'
+        }
       },
       name: {
         type: DataTypes.STRING,
@@ -70,6 +74,13 @@ export default (sequelize) => {
     Product.hasMany(models.Review, {
       foreignKey: 'product_id',
       as: 'reviews',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
+    });
+
+    Product.hasMany(models.CartItem, {
+      foreignKey: 'product_id',
+      as: 'cartItems',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });

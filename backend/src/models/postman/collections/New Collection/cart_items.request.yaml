@@ -1,0 +1,12 @@
+$kind: http-request
+name: POST cart item (create)
+url: http://localhost:8080/api/cart/items
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "product_id": 1,
+      "quantity": 2
+    }
+order: 6000

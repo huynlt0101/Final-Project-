@@ -44,7 +44,6 @@ export default (sequelize) => {
         allowNull: false,
         defaultValue: true
       },
-   
       address: {
         type: DataTypes.STRING,
         allowNull: true
@@ -86,6 +85,13 @@ export default (sequelize) => {
     User.hasMany(models.Review, {
       foreignKey: 'user_id',
       as: 'reviews',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
+    });
+
+    User.hasOne(models.Cart, {
+      foreignKey: 'user_id',
+      as: 'cart',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });

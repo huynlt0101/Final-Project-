@@ -2,6 +2,7 @@ import { Op } from 'sequelize';
 import { Product, Category } from '../models/index.js';
 import { AppError } from '../middleware/error.middleware.js';
 
+/** Read-only: does not insert or update products. */
 export const listProducts = async (query = {}) => {
   const where = {};
 
@@ -20,6 +21,7 @@ export const listProducts = async (query = {}) => {
   });
 };
 
+/** Read-only: does not insert or update products. */
 export const getProductById = async (id) => {
   const product = await Product.findByPk(id, {
     include: [
@@ -38,6 +40,7 @@ export const getProductById = async (id) => {
   return product;
 };
 
+/** Called only from POST /api/products (admin). Never from GET handlers. */
 export const createProduct = async (payload) => {
   const category = await Category.findByPk(payload.category_id);
 
