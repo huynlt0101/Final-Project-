@@ -1,0 +1,16 @@
+# Impeccable / agent tooling — not for remote
+.claude/
+.impeccable/
+.opencode/
+
+# Nested working copy
+Final-Project-/
+
+# Dependencies & build
+node_modules/
+dist/
+
+# Logs / local
+logs/
+*.log
+*.local
