@@ -1,40 +1,63 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { backendUrl, currency } from '../App'
+import { backendUrl, formatVND } from '../App'
 import { toast } from 'react-toastify'
+import { assets } from '../assets/assets'
+import Add from './Add'
 
 const List = ({ token }) => {
 
   const [list, setList] = useState([])
-  const [state, setState] = useState('loading')
+  const [editingProduct, setEditingProduct] = useState(null)
+  const [showForm, setShowForm] = useState(false)
+
+  const openAdd = () => {
+    setEditingProduct(null)
+    setShowForm(true)
+  }
+
+  const openEdit = (item) => {
+    setEditingProduct(item)
+    setShowForm(true)
+  }
+
+  const closeForm = () => {
+    setShowForm(false)
+    setEditingProduct(null)
+  }
 
   const fetchList = async () => {
-    setState('loading')
     try {
+
       const response = await axios.get(backendUrl + '/api/product/list')
       if (response.data.success) {
-        setList(response.data.products.reverse())
-        setState('ready')
-      } else {
-        toast.error(response.data.message)
-        setState('error')
+        setList(response.data.products.reverse());
       }
+      else {
+        toast.error(response.data.message)
+      }
+
     } catch (error) {
       console.log(error)
-      toast.error(error.response?.data?.message || error.message)
-      setState('error')
+      toast.error(error.message)
     }
   }
 
   const removeProduct = async (id) => {
     try {
+
       const response = await axios.post(backendUrl + '/api/product/remove', { id }, { headers: { token } })
+
       if (response.data.success) {
         toast.success(response.data.message)
-        await fetchList()
+        if (editingProduct && editingProduct._id === id) {
+          closeForm()
+        }
+        await fetchList();
       } else {
         toast.error(response.data.message)
       }
+
     } catch (error) {
       console.log(error)
       toast.error(error.message)
@@ -46,73 +69,62 @@ const List = ({ token }) => {
   }, [])
 
   return (
-    <div className='flex flex-col gap-6'>
-      <div className='border-b border-black pb-4'>
-        <h1 className='text-2xl font-semibold tracking-tight text-black'>Products</h1>
-        <p className='text-sm text-gray-600 mt-1'>
-          {state === 'ready' ? `${list.length} item${list.length === 1 ? '' : 's'} in catalog` : 'Catalog overview'}
-        </p>
+    <>
+      <div className='mb-4'>
+        <button onClick={openAdd} className='px-4 py-2 bg-black text-white text-sm'>+ Add Product</button>
       </div>
 
+      <p className='mb-2'>All Products List</p>
       <div className='flex flex-col gap-2'>
-        <div className='hidden md:grid grid-cols-[5rem_1fr_8rem_6rem_5rem] items-center gap-3 py-2.5 px-4 bg-black text-white text-xs uppercase tracking-wider font-medium rounded-t-lg'>
-          <span>Image</span>
-          <span>Name</span>
-          <span>Category</span>
-          <span className='text-right'>Price</span>
-          <span className='text-center'>Action</span>
+
+        {/* ------- List Table Title ---------- */}
+
+        <div className='hidden md:grid grid-cols-[1fr_3fr_1fr_1fr_1fr] items-center py-1 px-2 border bg-gray-100 text-sm'>
+          <b>Image</b>
+          <b>Name</b>
+          <b>Category</b>
+          <b>Price</b>
+          <b className='text-center'>Action</b>
         </div>
 
-        {state === 'loading' ? (
-          <div className='border border-gray-200 rounded-b-lg md:rounded-t-none py-12 text-center text-sm text-gray-600' role='status'>
-            Loading products…
-          </div>
-        ) : state === 'error' ? (
-          <div className='border border-gray-200 rounded-lg py-12 text-center'>
-            <p className='text-sm text-black font-medium' role='alert'>Could not load products</p>
-            <button
-              type='button'
-              onClick={fetchList}
-              className='mt-2 text-sm font-medium text-black underline underline-offset-4 hover:text-gray-600'
-            >
-              Try again
-            </button>
-          </div>
-        ) : list.length === 0 ? (
-          <div className='border border-gray-200 rounded-lg py-12 text-center'>
-            <p className='text-sm font-medium text-black'>No products yet</p>
-            <p className='text-sm text-gray-600 mt-1'>Add items to build your catalog.</p>
-          </div>
-        ) : (
+        {/* ------ Product List ------ */}
+
+        {
           list.map((item, index) => (
-            <div
-              className='grid grid-cols-[4rem_1fr_4rem] md:grid-cols-[5rem_1fr_8rem_6rem_5rem] items-center gap-3 py-3 px-4 border border-gray-200 border-t-0 text-sm first:rounded-t-none last:rounded-b-lg first:border-t md:first:border-t [&:not(:first-child)]:rounded-none'
-              key={item._id || index}
-            >
-              <img
-                className='w-12 h-12 object-cover rounded-md border border-gray-200 bg-gray-50'
-                src={item.image[0]}
-                alt={item.name}
-              />
-              <div className='min-w-0'>
-                <p className='font-medium text-black truncate'>{item.name}</p>
-                <p className='text-xs text-gray-600 md:hidden'>{item.category} · {currency}{item.price}</p>
+            <div className='grid grid-cols-[1fr_3fr_1fr] md:grid-cols-[1fr_3fr_1fr_1fr_1fr] items-center gap-2 py-1 px-2 border text-sm' key={index}>
+              <img className='w-12' src={item.image[0]} alt="" />
+              <p>{item.name}</p>
+              <p>{item.category}</p>
+              <p>{formatVND(item.price)}</p>
+              <div className='flex justify-center items-center gap-3'>
+                <img onClick={()=>openEdit(item)} src={assets.edit_icon} className='w-5 h-5 cursor-pointer' title='Edit' alt='Edit' />
+                <p onClick={()=>removeProduct(item._id)} className='w-5 h-5 flex items-center justify-center text-sm font-bold cursor-pointer' title='Remove'>X</p>
               </div>
-              <p className='hidden md:block text-gray-700'>{item.category}</p>
-              <p className='hidden md:block text-right font-semibold text-black tabular-nums'>{currency}{item.price}</p>
-              <button
-                type='button'
-                onClick={() => removeProduct(item._id)}
-                className='justify-self-center w-8 h-8 rounded-full border border-gray-300 text-gray-600 text-xs font-semibold hover:border-black hover:bg-black hover:text-white transition-colors duration-150'
-                aria-label={`Remove ${item.name}`}
-              >
-                ✕
-              </button>
             </div>
           ))
-        )}
+        }
+
       </div>
-    </div>
+
+      {/* ------- Add / Edit Modal ------- */}
+      {showForm && (
+        <div
+          onClick={closeForm}
+          className='fixed inset-0 bg-black/50 z-50 flex justify-center items-start overflow-y-auto'
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className='bg-white p-6 rounded-md w-full max-w-[600px] my-10 mx-4'
+          >
+            <Add
+              token={token}
+              editingProduct={editingProduct}
+              onDone={() => { closeForm(); fetchList() }}
+            />
+          </div>
+        </div>
+      )}
+    </>
   )
 }
 
