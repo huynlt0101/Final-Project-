@@ -32,7 +32,12 @@ import exchange_icon from './exchange_icon.png'
 import quality_icon from './quality_icon.png'
 import contact_img from './contact_img.png'
 import about_img from './about_img.png'
-import paypal from './paypal.png'
+import vnpay_logo from './vnpay_logo.svg'
+import vnpay from './vnpay.png'
+import bin_icon from './bin_icon.png'
+import logo from './logo.png'
+import star_icon from './star_icon.png'
+import star_dull_icon from './star_dull_icon.png'
 
 export const assets = {
 
@@ -48,7 +53,12 @@ export const assets = {
     quality_icon,
     contact_img,
     about_img,
-    paypal
+    vnpay_logo,
+    vnpay,
+    bin_icon,
+    logo,
+    star_icon,
+    star_dull_icon
 }
 
 export const products = [
