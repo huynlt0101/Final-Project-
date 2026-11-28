@@ -4,27 +4,93 @@
 @tailwind components;
 @tailwind utilities;
 
-a.active hr{
-    display: block;
-}
-
-*{
-    font-family: Outfit;
-}
-
-.prata-regular {
-    font-family: "Prata", serif;
-    font-weight: 400;
-    font-style: normal;
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
   }
 
-  ::-webkit-scrollbar{
-    display: none;
+  body {
+    @apply bg-paper font-sans text-ink;
   }
-  
-  @media (max-width:640px) {
-    a.active{
-        background-color: black;
-        color: white;
+
+  ::selection {
+    @apply bg-ink text-paper;
+  }
+
+  :focus-visible {
+    outline: 2px solid #0a0a0a;
+    outline-offset: 3px;
+  }
+
+  input,
+  textarea,
+  select {
+    caret-color: #0a0a0a;
+  }
+
+  ::-webkit-scrollbar {
+    width: 11px;
+    height: 11px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #ffffff;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #d6d6d1;
+    border: 3px solid #ffffff;
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #0a0a0a;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
     }
   }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-container px-5 sm:px-8 lg:px-12;
+  }
+
+  .display {
+    @apply font-display font-normal tracking-tightest;
+  }
+
+  .prata-regular {
+    @apply font-display font-normal;
+  }
+
+  .label {
+    @apply text-[11px] font-medium uppercase tracking-[0.22em] text-muted;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 bg-ink px-8 py-3.5 text-[11px] font-medium uppercase tracking-[0.2em] text-paper transition-colors duration-300 hover:bg-ink/85 disabled:cursor-not-allowed disabled:opacity-40;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 border border-ink px-8 py-3.5 text-[11px] font-medium uppercase tracking-[0.2em] text-ink transition-colors duration-300 hover:bg-ink hover:text-paper disabled:cursor-not-allowed disabled:opacity-40;
+  }
+
+  .field {
+    @apply w-full border border-line bg-paper px-4 py-3 text-sm text-ink transition-colors placeholder:text-muted focus:border-ink focus:outline-none;
+  }
+}

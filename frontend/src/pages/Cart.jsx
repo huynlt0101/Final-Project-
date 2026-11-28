@@ -1,4 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { ShopContext, formatVND } from '../context/ShopContext'
 import Title from '../components/Title';
 import { assets } from '../assets/assets';
@@ -30,47 +31,66 @@ const Cart = () => {
   }, [cartItems, products])
 
   return (
-    <div className='border-t pt-14'>
+    <div className='pt-12'>
 
-      <div className=' text-2xl mb-3'>
-        <Title text1={'YOUR'} text2={'CART'} />
-      </div>
+      <Title text1='Your' text2='Cart' />
 
-      <div>
-        {
-          cartData.map((item, index) => {
+      {cartData.length === 0 ? (
+        <div className='mt-14 border-y border-line py-20 text-center'>
+          <p className='display text-2xl'>Your cart is empty</p>
+          <p className='mx-auto mt-3 max-w-[40ch] text-sm leading-relaxed text-muted'>
+            Browse the collection and add a few pieces to get started.
+          </p>
+          <Link to='/collection' className='btn-outline mt-8'>Shop the collection</Link>
+        </div>
+      ) : (
+        <div className='mt-8 grid gap-12 lg:grid-cols-[1.6fr_1fr] lg:items-start'>
 
-            const productData = products.find((product) => product._id === item._id);
+          <div className='divide-y divide-line border-y border-line'>
+            {
+              cartData.map((item, index) => {
 
-            return (
-              <div key={index} className='py-4 border-t border-b text-gray-700 grid grid-cols-[4fr_0.5fr_0.5fr] sm:grid-cols-[4fr_2fr_0.5fr] items-center gap-4'>
-                <div className=' flex items-start gap-6'>
-                  <img className='w-16 sm:w-20' src={productData.image[0]} alt="" />
-                  <div>
-                    <p className='text-xs sm:text-lg font-medium'>{productData.name}</p>
-                    <div className='flex items-center gap-5 mt-2'>
-                      <p>{formatVND(productData.price)}</p>
-                      <p className='px-2 sm:px-3 sm:py-1 border bg-slate-50'>{item.size}</p>
+                const productData = products.find((product) => product._id === item._id);
+
+                if (!productData) return null
+
+                return (
+                  <div key={index} className='flex flex-col gap-4 py-6 sm:flex-row sm:items-center sm:justify-between'>
+                    <div className='flex items-start gap-5'>
+                      <Link to={`/product/${item._id}`} className='w-20 shrink-0 bg-surface'>
+                        <img className='aspect-[3/4] w-full object-cover' src={productData.image[0]} alt={productData.name} />
+                      </Link>
+                      <div className='flex flex-col gap-2'>
+                        <Link to={`/product/${item._id}`} className='text-sm font-medium text-ink transition-opacity hover:opacity-70'>{productData.name}</Link>
+                        <p className='text-sm tabular-nums text-muted'>{formatVND(productData.price)}</p>
+                        <p className='text-xs uppercase tracking-[0.16em] text-muted'>Size {item.size}</p>
+                      </div>
+                    </div>
+
+                    <div className='flex items-center justify-between gap-6 sm:justify-end'>
+                      <div className='flex items-center border border-line'>
+                        <button type='button' onClick={() => updateQuantity(item._id, item.size, Math.max(1, item.quantity - 1))} aria-label='Decrease quantity' className='h-9 w-9 text-sm transition-colors hover:bg-surface'>−</button>
+                        <span className='w-8 text-center text-sm tabular-nums'>{item.quantity}</span>
+                        <button type='button' onClick={() => updateQuantity(item._id, item.size, item.quantity + 1)} aria-label='Increase quantity' className='h-9 w-9 text-sm transition-colors hover:bg-surface'>+</button>
+                      </div>
+                      <button type='button' onClick={() => updateQuantity(item._id, item.size, 0)} aria-label={`Remove ${productData.name}`} className='p-1 opacity-60 transition-opacity hover:opacity-100'>
+                        <img className='h-4 w-4' src={assets.bin_icon} alt='' />
+                      </button>
                     </div>
                   </div>
-                </div>
-                <input onChange={(e) => e.target.value === '' || e.target.value === '0' ? null : updateQuantity(item._id, item.size, Number(e.target.value))} className='border max-w-10 sm:max-w-20 px-1 sm:px-2 py-1' type="number" min={1} defaultValue={item.quantity} />
-                <img onClick={() => updateQuantity(item._id, item.size, 0)} className='w-4 mr-4 sm:w-5 cursor-pointer' src={assets.bin_icon} alt="" />
-              </div>
-            )
+                )
 
-          })
-        }
-      </div>
-
-      <div className='flex justify-end my-20'>
-        <div className='w-full sm:w-[450px]'>
-          <CartTotal />
-          <div className=' w-full text-end'>
-            <button onClick={() => token ? navigate('/place-order') : navigate('/login', { state: { from: '/place-order' } })} className='bg-black text-white text-sm my-8 px-8 py-3'>PROCEED TO CHECKOUT</button>
+              })
+            }
           </div>
+
+          <div className='lg:sticky lg:top-28'>
+            <CartTotal />
+            <button onClick={() => token ? navigate('/place-order') : navigate('/login', { state: { from: '/place-order' } })} className='btn-primary mt-5 w-full'>Proceed to checkout</button>
+          </div>
+
         </div>
-      </div>
+      )}
 
     </div>
   )

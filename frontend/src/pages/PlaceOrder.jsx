@@ -1,10 +1,17 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Title from '../components/Title'
 import CartTotal from '../components/CartTotal'
 import { assets } from '../assets/assets'
 import { ShopContext } from '../context/ShopContext'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+
+const Field = ({ label, className = '', ...props }) => (
+    <label className={`flex flex-col gap-1.5 ${className}`}>
+        <span className='text-[11px] font-medium uppercase tracking-[0.16em] text-muted'>{label}</span>
+        <input {...props} className='field' />
+    </label>
+)
 
 const PlaceOrder = () => {
 
@@ -58,7 +65,7 @@ const PlaceOrder = () => {
                 items: orderItems,
                 amount: getCartAmount() + delivery_fee
             }
-            
+
 
             if (orderItems.length === 0) {
                 toast.error('Your cart is empty')
@@ -68,8 +75,8 @@ const PlaceOrder = () => {
             switch (method) {
 
                 // API Calls for COD
-                case 'cod':
-                    const response = await axios.post(backendUrl + '/api/order/place',orderData,{headers:{token}})
+                case 'cod': {
+                    const response = await axios.post(backendUrl + '/api/order/place', orderData, { headers: { token } })
                     if (response.data.success) {
                         setCartItems({})
                         navigate('/orders')
@@ -77,16 +84,18 @@ const PlaceOrder = () => {
                         toast.error(response.data.message)
                     }
                     break;
+                }
 
-                case 'vnpay':
-                    const responseVnpay = await axios.post(backendUrl + '/api/order/vnpay',orderData,{headers:{token}})
+                case 'vnpay': {
+                    const responseVnpay = await axios.post(backendUrl + '/api/order/vnpay', orderData, { headers: { token } })
                     if (responseVnpay.data.success) {
-                        const {payment_url} = responseVnpay.data
+                        const { payment_url } = responseVnpay.data
                         window.location.replace(payment_url)
                     } else {
                         toast.error(responseVnpay.data.message)
                     }
                     break;
+                }
 
                 default:
                     break;
@@ -103,56 +112,65 @@ const PlaceOrder = () => {
     if (!token) return null
 
     return (
-        <form onSubmit={onSubmitHandler} className='flex flex-col sm:flex-row justify-between gap-4 pt-5 sm:pt-14 min-h-[80vh] border-t'>
-            {/* ------------- Left Side ---------------- */}
-            <div className='flex flex-col gap-4 w-full sm:max-w-[480px]'>
+        <form onSubmit={onSubmitHandler} className='grid gap-12 pt-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-start'>
 
-                <div className='text-xl sm:text-2xl my-3'>
-                    <Title text1={'DELIVERY'} text2={'INFORMATION'} />
+            {/* ------------- Left Side ---------------- */}
+            <div className='flex flex-col gap-6'>
+
+                <Title text1='Delivery' text2='Information' />
+
+                <div className='grid gap-4 sm:grid-cols-2'>
+                    <Field label='First name' required onChange={onChangeHandler} name='firstName' value={formData.firstName} type="text" placeholder='First name' />
+                    <Field label='Last name' required onChange={onChangeHandler} name='lastName' value={formData.lastName} type="text" placeholder='Last name' />
                 </div>
-                <div className='flex gap-3'>
-                    <input required onChange={onChangeHandler} name='firstName' value={formData.firstName} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="text" placeholder='First name' />
-                    <input required onChange={onChangeHandler} name='lastName' value={formData.lastName} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="text" placeholder='Last name' />
+                <Field label='Email address' required onChange={onChangeHandler} name='email' value={formData.email} type="email" placeholder='you@example.com' />
+                <Field label='Street address' required onChange={onChangeHandler} name='street' value={formData.street} type="text" placeholder='Street and number' />
+                <div className='grid gap-4 sm:grid-cols-2'>
+                    <Field label='City' required onChange={onChangeHandler} name='city' value={formData.city} type="text" placeholder='City' />
+                    <Field label='State / Province' onChange={onChangeHandler} name='state' value={formData.state} type="text" placeholder='State' />
                 </div>
-                <input required onChange={onChangeHandler} name='email' value={formData.email} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="email" placeholder='Email address' />
-                <input required onChange={onChangeHandler} name='street' value={formData.street} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="text" placeholder='Street' />
-                <div className='flex gap-3'>
-                    <input required onChange={onChangeHandler} name='city' value={formData.city} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="text" placeholder='City' />
-                    <input onChange={onChangeHandler} name='state' value={formData.state} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="text" placeholder='State' />
+                <div className='grid gap-4 sm:grid-cols-2'>
+                    <Field label='Zipcode' required onChange={onChangeHandler} name='zipcode' value={formData.zipcode} type="number" placeholder='Zipcode' />
+                    <Field label='Country' required onChange={onChangeHandler} name='country' value={formData.country} type="text" placeholder='Country' />
                 </div>
-                <div className='flex gap-3'>
-                    <input required onChange={onChangeHandler} name='zipcode' value={formData.zipcode} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="number" placeholder='Zipcode' />
-                    <input required onChange={onChangeHandler} name='country' value={formData.country} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="text" placeholder='Country' />
-                </div>
-                <input required onChange={onChangeHandler} name='phone' value={formData.phone} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="number" placeholder='Phone' />
+                <Field label='Phone' required onChange={onChangeHandler} name='phone' value={formData.phone} type="number" placeholder='Phone number' />
             </div>
 
             {/* ------------- Right Side ------------------ */}
-            <div className='mt-8'>
+            <div className='lg:sticky lg:top-28'>
 
-                <div className='mt-8 min-w-80'>
-                    <CartTotal />
-                </div>
+                <CartTotal />
 
-                <div className='mt-12'>
-                    <Title text1={'PAYMENT'} text2={'METHOD'} />
-                    {/* --------------- Payment Method Selection ------------- */}
-                    <div className='flex gap-3 flex-col lg:flex-row'>
-                        <div onClick={() => setMethod('vnpay')} className='flex items-center gap-3 border p-2 px-3 cursor-pointer'>
-                            <p className={`min-w-3.5 h-3.5 border rounded-full ${method === 'vnpay' ? 'bg-green-400' : ''}`}></p>
-                            <img className='h-5 mx-4' src={assets.vnpay_logo} alt="VNPay" />
-                        </div>
-                        <div onClick={() => setMethod('cod')} className='flex items-center gap-3 border p-2 px-3 cursor-pointer'>
-                            <p className={`min-w-3.5 h-3.5 border rounded-full ${method === 'cod' ? 'bg-green-400' : ''}`}></p>
-                            <p className='text-gray-500 text-sm font-medium mx-4'>CASH ON DELIVERY</p>
-                        </div>
+                <div className='mt-8'>
+                    <p className='text-sm font-medium text-ink'>Payment method</p>
+                    <div className='mt-4 grid gap-3 sm:grid-cols-2'>
+                        <button
+                            type='button'
+                            onClick={() => setMethod('cod')}
+                            aria-pressed={method === 'cod'}
+                            className={`flex items-center justify-between gap-3 border px-4 py-4 text-left transition-colors ${method === 'cod' ? 'border-ink bg-ink text-paper' : 'border-line text-ink hover:border-ink'}`}
+                        >
+                            <span className='text-[11px] font-medium uppercase tracking-[0.14em]'>Cash on delivery</span>
+                            <span className={`h-2.5 w-2.5 rounded-full border ${method === 'cod' ? 'border-paper bg-paper' : 'border-muted'}`} />
+                        </button>
+                        <button
+                            type='button'
+                            onClick={() => setMethod('vnpay')}
+                            aria-pressed={method === 'vnpay'}
+                            className={`flex items-center justify-between gap-3 border px-4 py-4 text-left transition-colors ${method === 'vnpay' ? 'border-ink bg-ink text-paper' : 'border-line text-ink hover:border-ink'}`}
+                        >
+                            <span className='flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.14em]'>
+                                <img className={`h-4 ${method === 'vnpay' ? 'brightness-0 invert' : ''}`} src={assets.vnpay_logo} alt='' />
+                                VNPay
+                            </span>
+                            <span className={`h-2.5 w-2.5 rounded-full border ${method === 'vnpay' ? 'border-paper bg-paper' : 'border-muted'}`} />
+                        </button>
                     </div>
 
-                    <div className='w-full text-end mt-8'>
-                        <button type='submit' className='bg-black text-white px-16 py-3 text-sm'>PLACE ORDER</button>
-                    </div>
+                    <button type='submit' className='btn-primary mt-8 w-full'>Place order</button>
                 </div>
             </div>
+
         </form>
     )
 }

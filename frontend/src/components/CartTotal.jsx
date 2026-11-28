@@ -1,33 +1,30 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { ShopContext, formatVND } from '../context/ShopContext'
-import Title from './Title';
 
 const CartTotal = () => {
 
-    const {delivery_fee,getCartAmount} = useContext(ShopContext);
+    const { delivery_fee, getCartAmount } = useContext(ShopContext);
+
+    const subtotal = getCartAmount();
+    const total = subtotal === 0 ? 0 : subtotal + delivery_fee;
 
   return (
-    <div className='w-full'>
-      <div className='text-2xl'>
-        <Title text1={'CART'} text2={'TOTALS'} />
-      </div>
-
-      <div className='flex flex-col gap-2 mt-2 text-sm'>
-            <div className='flex justify-between'>
-                <p>Subtotal</p>
-                <p>{formatVND(getCartAmount())}</p>
-            </div>
-            <hr />
-            <div className='flex justify-between'>
-                <p>Shipping Fee</p>
-                <p>{formatVND(delivery_fee)}</p>
-            </div>
-            <hr />
-            <div className='flex justify-between'>
-                <b>Total</b>
-                <b>{formatVND(getCartAmount() === 0 ? 0 : getCartAmount() + delivery_fee)}</b>
-            </div>
-      </div>
+    <div className='border border-line p-6'>
+      <h3 className='text-sm font-medium text-ink'>Order summary</h3>
+      <dl className='mt-5 space-y-3 text-sm'>
+        <div className='flex items-center justify-between'>
+          <dt className='text-muted'>Subtotal</dt>
+          <dd className='tabular-nums'>{formatVND(subtotal)}</dd>
+        </div>
+        <div className='flex items-center justify-between'>
+          <dt className='text-muted'>Shipping</dt>
+          <dd className='tabular-nums'>{formatVND(delivery_fee)}</dd>
+        </div>
+        <div className='flex items-center justify-between border-t border-line pt-3 text-base font-medium'>
+          <dt>Total</dt>
+          <dd className='tabular-nums'>{formatVND(total)}</dd>
+        </div>
+      </dl>
     </div>
   )
 }

@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { ShopContext, formatVND } from '../context/ShopContext';
-import { assets } from '../assets/assets';
 import RelatedProducts from '../components/RelatedProducts';
 
 const Product = () => {
@@ -10,7 +9,8 @@ const Product = () => {
   const { products, addToCart } = useContext(ShopContext);
   const [productData, setProductData] = useState(false);
   const [image, setImage] = useState('')
-  const [size,setSize] = useState('')
+  const [size, setSize] = useState('')
+  const [tab, setTab] = useState('description')
 
   const fetchProductData = async () => {
 
@@ -26,76 +26,102 @@ const Product = () => {
 
   useEffect(() => {
     fetchProductData();
-  }, [productId,products])
+  }, [productId, products])
 
   return productData ? (
-    <div className='border-t-2 pt-10 transition-opacity ease-in duration-500 opacity-100'>
-      {/*----------- Product Data-------------- */}
-      <div className='flex gap-12 sm:gap-12 flex-col sm:flex-row'>
+    <div className='pt-10'>
+      <div className='grid gap-10 md:grid-cols-2 md:gap-14'>
 
         {/*---------- Product Images------------- */}
-        <div className='flex-1 flex flex-col-reverse gap-3 sm:flex-row'>
-          <div className='flex sm:flex-col overflow-x-auto sm:overflow-y-scroll justify-between sm:justify-normal sm:w-[18.7%] w-full'>
+        <div className='flex flex-col-reverse gap-3 sm:flex-row'>
+          <div className='flex gap-3 overflow-x-auto sm:w-24 sm:flex-col sm:overflow-visible'>
               {
-                productData.image.map((item,index)=>(
-                  <img onClick={()=>setImage(item)} src={item} key={index} className='w-[24%] sm:w-full sm:mb-3 flex-shrink-0 cursor-pointer' alt="" />
+                productData.image.map((item, index) => (
+                  <button
+                    type='button'
+                    onClick={() => setImage(item)}
+                    key={index}
+                    aria-label={`View image ${index + 1}`}
+                    className={`w-[22%] shrink-0 border transition-colors sm:w-full ${image === item ? 'border-ink' : 'border-transparent hover:border-line'}`}
+                  >
+                    <img src={item} key={index} className='aspect-[3/4] w-full object-cover' alt='' />
+                  </button>
                 ))
               }
           </div>
-          <div className='w-full sm:w-[80%]'>
-              <img className='w-full h-auto' src={image} alt="" />
+          <div className='flex-1 bg-surface'>
+              <img className='aspect-[4/5] w-full object-cover' src={image} alt={productData.name} />
           </div>
         </div>
 
         {/* -------- Product Info ---------- */}
-        <div className='flex-1'>
-          <h1 className='font-medium text-2xl mt-2'>{productData.name}</h1>
-          <div className=' flex items-center gap-1 mt-2'>
-              <img src={assets.star_icon} alt="" className="w-3 5" />
-              <img src={assets.star_icon} alt="" className="w-3 5" />
-              <img src={assets.star_icon} alt="" className="w-3 5" />
-              <img src={assets.star_icon} alt="" className="w-3 5" />
-              <img src={assets.star_dull_icon} alt="" className="w-3 5" />
-              <p className='pl-2'>(122)</p>
-          </div>
-          <p className='mt-5 text-3xl font-medium'>{formatVND(productData.price)}</p>
-          <p className='mt-5 text-gray-500 md:w-4/5'>{productData.description}</p>
-          <div className='flex flex-col gap-4 my-8'>
-              <p>Select Size</p>
-              <div className='flex gap-2'>
-                {productData.sizes.map((item,index)=>(
-                  <button onClick={()=>setSize(item)} className={`border py-2 px-4 bg-gray-100 ${item === size ? 'border-orange-500' : ''}`} key={index}>{item}</button>
+        <div className='flex flex-col'>
+          <h1 className='display text-[clamp(1.8rem,3vw,2.75rem)] leading-tight'>{productData.name}</h1>
+          <p className='mt-4 text-2xl font-medium tabular-nums'>{formatVND(productData.price)}</p>
+          <p className='mt-5 max-w-[52ch] text-sm leading-relaxed text-muted'>{productData.description}</p>
+
+          <div className='mt-8'>
+              <p className='text-xs font-medium uppercase tracking-[0.18em] text-muted'>Select size</p>
+              <div className='mt-3 flex flex-wrap gap-2'>
+                {productData.sizes.map((item, index) => (
+                  <button
+                    onClick={() => setSize(item)}
+                    key={index}
+                    className={`min-w-12 border px-4 py-2.5 text-sm transition-colors ${item === size ? 'border-ink bg-ink text-paper' : 'border-line bg-paper text-ink hover:border-ink'}`}
+                  >
+                    {item}
+                  </button>
                 ))}
               </div>
           </div>
-          <button onClick={()=>addToCart(productData._id,size)} className='bg-black text-white px-8 py-3 text-sm active:bg-gray-700'>ADD TO CART</button>
-          <hr className='mt-8 sm:w-4/5' />
-          <div className='text-sm text-gray-500 mt-5 flex flex-col gap-1'>
-              <p>100% Original product.</p>
-              <p>Cash on delivery is available on this product.</p>
-              <p>Easy return and exchange policy within 7 days.</p>
+
+          <button onClick={() => addToCart(productData._id, size)} className='btn-primary mt-8 w-full sm:w-auto'>Add to cart</button>
+
+          <div className='mt-8 space-y-1.5 border-t border-line pt-6 text-sm text-muted'>
+              <p>Cash on delivery available.</p>
+              <p>Returns and exchanges within 7 days.</p>
+              <p>Questions? Get in touch.</p>
           </div>
         </div>
       </div>
 
       {/* ---------- Description & Review Section ------------- */}
       <div className='mt-20'>
-        <div className='flex'>
-          <b className='border px-5 py-3 text-sm'>Description</b>
-          <p className='border px-5 py-3 text-sm'>Reviews (122)</p>
+        <div className='flex border-b border-line'>
+          <button
+            onClick={() => setTab('description')}
+            className={`-mb-px border-b-2 px-1 py-3 text-xs font-medium uppercase tracking-[0.18em] transition-colors ${tab === 'description' ? 'border-ink text-ink' : 'border-transparent text-muted hover:text-ink'}`}
+          >
+            Description
+          </button>
+          <button
+            onClick={() => setTab('reviews')}
+            className={`-mb-px ml-8 border-b-2 px-1 py-3 text-xs font-medium uppercase tracking-[0.18em] transition-colors ${tab === 'reviews' ? 'border-ink text-ink' : 'border-transparent text-muted hover:text-ink'}`}
+          >
+            Reviews
+          </button>
         </div>
-        <div className='flex flex-col gap-4 border px-6 py-6 text-sm text-gray-500'>
-          <p>An e-commerce website is an online platform that facilitates the buying and selling of products or services over the internet. It serves as a virtual marketplace where businesses and individuals can showcase their products, interact with customers, and conduct transactions without the need for a physical presence. E-commerce websites have gained immense popularity due to their convenience, accessibility, and the global reach they offer.</p>
-          <p>E-commerce websites typically display products or services along with detailed descriptions, images, prices, and any available variations (e.g., sizes, colors). Each product usually has its own dedicated page with relevant information.</p>
+
+        <div className='py-8'>
+          {tab === 'description' ? (
+            <div className='max-w-[65ch] space-y-4 text-sm leading-relaxed text-muted'>
+              <p>{productData.description}</p>
+              <p>Category: {productData.category} · {productData.subCategory}</p>
+              <p>Available sizes: {productData.sizes.join(', ')}</p>
+            </div>
+          ) : (
+            <p className='max-w-[65ch] text-sm leading-relaxed text-muted'>
+              No reviews yet. Reviews will appear here once customers have received their orders.
+            </p>
+          )}
         </div>
       </div>
 
       {/* --------- display related products ---------- */}
-
       <RelatedProducts category={productData.category} subCategory={productData.subCategory} />
 
     </div>
-  ) : <div className=' opacity-0'></div>
+  ) : <div className='min-h-[50vh]' />
 }
 
 export default Product

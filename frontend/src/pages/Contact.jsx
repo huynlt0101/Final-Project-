@@ -1,29 +1,37 @@
-import React from 'react'
 import Title from '../components/Title'
 import { assets } from '../assets/assets'
 import NewsletterBox from '../components/NewsletterBox'
 
 const Contact = () => {
   return (
-    <div>
-      
-      <div className='text-center text-2xl pt-10 border-t'>
-          <Title text1={'CONTACT'} text2={'US'} />
-      </div>
+    <div className='pt-12'>
 
-      <div className='my-10 flex flex-col justify-center md:flex-row gap-10 mb-28'>
-        <img className='w-full md:max-w-[480px]' src={assets.contact_img} alt="" />
-        <div className='flex flex-col justify-center items-start gap-6'>
-          <p className='font-semibold text-xl text-gray-600'>Our Store</p>
-          <p className=' text-gray-500'>54709 Willms Station <br /> Suite 350, Washington, USA</p>
-          <p className=' text-gray-500'>Tel: (415) 555-0132 <br /> Email: admin@forever.com</p>
-          <p className='font-semibold text-xl text-gray-600'>Careers at Forever</p>
-          <p className=' text-gray-500'>Learn more about our teams and job openings.</p>
-          <button className='border border-black px-8 py-4 text-sm hover:bg-black hover:text-white transition-all duration-500'>Explore Jobs</button>
+      <Title text1='Contact' text2='Us' align='center' />
+
+      <div className='mt-14 grid gap-10 md:grid-cols-2 md:items-center md:gap-16'>
+        <img className='aspect-[4/5] w-full bg-surface object-cover' src={assets.contact_img} alt='The Foxie Shop storefront' />
+        <div className='flex max-w-[52ch] flex-col gap-7'>
+          <div>
+            <p className='text-xs font-medium uppercase tracking-[0.18em] text-muted'>Visit</p>
+            <p className='mt-2 text-sm leading-relaxed text-ink'>Ho Chi Minh City, Vietnam</p>
+          </div>
+          <div>
+            <p className='text-xs font-medium uppercase tracking-[0.18em] text-muted'>Talk to us</p>
+            <p className='mt-2 text-sm leading-relaxed text-ink'>hello@foxieshop.vn</p>
+            <p className='mt-1 text-sm leading-relaxed text-ink'>+84 28 1234 5678</p>
+          </div>
+          <div>
+            <p className='text-xs font-medium uppercase tracking-[0.18em] text-muted'>Careers</p>
+            <p className='mt-2 text-sm leading-relaxed text-muted'>We are a small team. If you would like to work with us, say hello.</p>
+          </div>
+          <a href='mailto:hello@foxieshop.vn' className='btn-outline w-fit'>Email us</a>
         </div>
       </div>
 
-      <NewsletterBox/>
+      <div className='mt-20'>
+        <NewsletterBox />
+      </div>
+
     </div>
   )
 }

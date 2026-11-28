@@ -1,5 +1,3 @@
-import React from 'react'
-
 const NewsletterBox = () => {
 
     const onSubmitHandler = (event) => {
@@ -7,14 +5,21 @@ const NewsletterBox = () => {
     }
 
   return (
-    <div className=' text-center'>
-      <p className='text-2xl font-medium text-gray-800'>Subscribe now & get 20% off</p>
-      <p className='text-gray-400 mt-3'>
-      Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+    <div className='border border-line px-6 py-14 text-center sm:px-12'>
+      <h2 className='display text-[clamp(1.6rem,3vw,2.4rem)] leading-tight text-ink'>Join the studio list</h2>
+      <p className='mx-auto mt-4 max-w-[46ch] text-sm leading-relaxed text-muted'>
+        New arrivals, restocks, and notes from the studio — sent occasionally, never often.
       </p>
-      <form onSubmit={onSubmitHandler} className='w-full sm:w-1/2 flex items-center gap-3 mx-auto my-6 border pl-3'>
-        <input className='w-full sm:flex-1 outline-none' type="email" placeholder='Enter your email' required/>
-        <button type='submit' className='bg-black text-white text-xs px-10 py-4'>SUBSCRIBE</button>
+      <form onSubmit={onSubmitHandler} className='mx-auto mt-8 flex w-full max-w-md flex-col gap-3 sm:flex-row sm:gap-0'>
+        <label htmlFor='newsletter-email' className='sr-only'>Email address</label>
+        <input
+          id='newsletter-email'
+          className='field sm:border-r-0'
+          type='email'
+          placeholder='Your email address'
+          required
+        />
+        <button type='submit' className='btn-primary shrink-0'>Subscribe</button>
       </form>
     </div>
   )
